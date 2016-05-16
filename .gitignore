@@ -3,6 +3,7 @@ $RECYCLE.BIN/
 *.a
 *.app
 *.bak
+*.bin
 *.cab
 *.dSYM/
 *.dll
@@ -12,6 +13,7 @@ $RECYCLE.BIN/
 *.gch
 *.hex
 *.i*86
+*.iso
 *.ko
 *.la
 *.lai

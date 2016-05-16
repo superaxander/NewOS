@@ -8,11 +8,15 @@ function help {
 }
 
 function build_i386 {
-	nasm -felf32 ./src/arch/i386/boot.s -o build/boot.o
-	i686-elf-gcc -c ./src/kernel/kernel.c -o build/kernel.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wall -Wextra -Werror
+	nasm -f elf ./src/arch/i386/boot.s -o build/boot.o
+	nasm -f elf ./src/arch/i386/gdt.s -o build/gdt_asm.o
+	i686-elf-gcc -I./src -c ./src/kernel/kernel.c -o build/kernel.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wall -Wextra -Werror
+	i686-elf-gcc -I./src -c ./src/kernel/lib/klibc.c -o build/klibc.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wall -Wextra -Werror
+	i686-elf-gcc -I./src -c ./src/kernel/lib/fallback_vga.c -o build/fallback_vga.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wextra -Werror
+	i686-elf-gcc -I./src -c ./src/kernel/lib/gdt.c -o build/gdt_c.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wextra -Werror
 }
 function link_i386 {
-	i686-elf-gcc -T ./linker.ld -o build/os.bin -ffreestanding -O2 -nostdlib ./build/boot.o ./build/kernel.o -lgcc
+	i686-elf-gcc -T ./linker.ld -o build/os.bin -ffreestanding -O2 -nostdlib ./build/boot.o ./build/kernel.o ./build/klibc.o ./build/fallback_vga.o ./build/gdt_asm.o ./build/gdt_c.o -lgcc
 }
 function build_common {
 	echo common build not implemented
