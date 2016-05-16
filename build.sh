@@ -10,13 +10,19 @@ function help {
 function build_i386 {
 	nasm -f elf ./src/arch/i386/boot.s -o build/boot.o
 	nasm -f elf ./src/arch/i386/gdt.s -o build/gdt_asm.o
+	nasm -f elf ./src/arch/i386/idt.s -o build/idt_asm.o
+	nasm -f elf ./src/arch/i386/isr.s -o build/isr_asm.o
+	nasm -f elf ./src/arch/i386/irq.s -o build/irq_asm.o
 	i686-elf-gcc -I./src -c ./src/kernel/kernel.c -o build/kernel.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wall -Wextra -Werror
 	i686-elf-gcc -I./src -c ./src/kernel/lib/klibc.c -o build/klibc.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wall -Wextra -Werror
 	i686-elf-gcc -I./src -c ./src/kernel/lib/fallback_vga.c -o build/fallback_vga.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wextra -Werror
 	i686-elf-gcc -I./src -c ./src/kernel/lib/gdt.c -o build/gdt_c.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wextra -Werror
+	i686-elf-gcc -I./src -c ./src/kernel/lib/idt.c -o build/idt_c.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wextra -Werror
+	i686-elf-gcc -I./src -c ./src/kernel/lib/isr.c -o build/isr_c.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wextra -Werror
+	i686-elf-gcc -I./src -c ./src/kernel/lib/irq.c -o build/irq_c.o -std=gnu99 -D i386=1 -ffreestanding -O2 -Wextra -Werror
 }
 function link_i386 {
-	i686-elf-gcc -T ./linker.ld -o build/os.bin -ffreestanding -O2 -nostdlib ./build/boot.o ./build/kernel.o ./build/klibc.o ./build/fallback_vga.o ./build/gdt_asm.o ./build/gdt_c.o -lgcc
+	i686-elf-gcc -T ./linker.ld -o build/os.bin -ffreestanding -O2 -nostdlib ./build/boot.o ./build/kernel.o ./build/klibc.o ./build/fallback_vga.o ./build/gdt_asm.o ./build/gdt_c.o ./build/idt_asm.o ./build/idt_c.o ./build/isr_asm.o ./build/isr_c.o ./build/irq_asm.o ./build/irq_c.o -lgcc
 }
 function build_common {
 	echo common build not implemented

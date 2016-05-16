@@ -34,5 +34,9 @@ void terminal_putentryat(char, uint8_t, size_t, size_t);
 void terminal_putchar(char);
 void terminal_writestring(const char*);
 int terminal_scroll();
+void terminal_translate(int, int);
+void terminal_set_location(size_t, size_t);
+void move_cursor_auto();
+void move_cursor(size_t, size_t);
 
 #endif

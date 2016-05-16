@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include "kernel/lib/fallback_vga.h"
 #include "kernel/lib/gdt.h"
+#include "kernel/lib/idt.h"
+#include "kernel/lib/isr.h"
+#include "kernel/lib/irq.h"
 
 #if i386 != 1
 #error "Non-i386 compilation is not yet supported"
@@ -18,9 +21,15 @@ void kernel_entry()
 
 void kernel_main()
 {
-	/* Since there is no support for newlines in terminal_putchar
-         * yet, '\n' will produce some VGA specific character instead.
-         * This is normal.
-         */
-	terminal_writestring("Hello, kernel World!\n");
+	terminal_writestring("GDT successfully loaded\nLoading IDT");
+	terminal_translate(-11, 0);
+	idt_install();
+	terminal_writestring("IDT successfully loaded\nLoading ISRs");
+	terminal_translate(-12, 0);
+	isr_install();
+	terminal_writestring("ISRs successfully loaded\nLoading IRQs");
+	terminal_translate(-12, 0);
+	irq_install();
+	restore_interrupts();
+	terminal_writestring("IRQs successfully loaded\n");
 }

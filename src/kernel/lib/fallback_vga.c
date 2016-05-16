@@ -32,6 +32,38 @@ void terminal_initialize()
 		}
 	}
 }
+
+void move_cursor_auto()
+{
+	move_cursor(terminal_column, terminal_row);
+}
+
+void move_cursor(size_t x, size_t y)
+{
+    unsigned temp;
+
+    temp = y * 80 + x;
+
+    outportb(0x3D4, 14);
+    outportb(0x3D5, temp >> 8);
+    outportb(0x3D4, 15);
+    outportb(0x3D5, temp);
+}
+
+void terminal_translate(int x, int y)
+{
+	int x_new, y_new;
+	x_new = terminal_column + x;
+	y_new = terminal_row    + y;
+	terminal_column = x_new < (int)VGA_WIDTH  ? (x_new < 0 ? 0 : x_new) : (VGA_WIDTH  - 1);
+	terminal_row    = y_new < (int)VGA_HEIGHT ? (y_new < 0 ? 0 : y_new) : (VGA_HEIGHT - 1);
+}
+
+void terminal_set_location(size_t x, size_t y)
+{
+	terminal_column = x < (int)VGA_WIDTH  ? x : (VGA_WIDTH  - 1);
+	terminal_row    = y < (int)VGA_HEIGHT ? y : (VGA_HEIGHT - 1);
+}
  
 void terminal_setcolor(uint8_t color)
 {
@@ -82,6 +114,7 @@ void terminal_putchar(char c)
 			terminal_scroll(1);
 			terminal_row = VGA_HEIGHT-1;
 		}
+		move_cursor_auto();
 		return;
 	}
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
@@ -92,6 +125,7 @@ void terminal_putchar(char c)
 			terminal_row = VGA_HEIGHT-1;
 		}
 	}
+	move_cursor_auto();
 }
  
 void terminal_writestring(const char* data)
