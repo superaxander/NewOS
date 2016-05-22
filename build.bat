@@ -1,2 +1,2 @@
 @echo off
-vagrant ssh -c "bash '/vagrant/build.sh' i386"
+vagrant ssh -c "bash '/vagrant/build.sh' x86_64"

@@ -1,3 +1,4 @@
+[BITS 32]
 global irq0
 global irq1
 global irq2

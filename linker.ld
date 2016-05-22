@@ -39,6 +39,23 @@ SECTIONS
 		*(.bootstrap_stack)
 	}
 
+	/* 64-bit additions 
+	.eh_frame BLOCK(4K) : ALIGN(4K)
+	{
+		*(.eh_frame)
+	}
+	*/
+
+	/DISCARD/ :
+	{
+		*(.comment)
+		/* Should I discard these?*/
+		*(.shstrtab)
+		*(.symtab)
+		*(.strtab)
+		*(.eh_frame)
+	}
+
 	/* The compiler may produce other sections, by default it will put them in
 	   a segment with the same name. Simply add stuff here as needed. */
 }

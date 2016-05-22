@@ -13,6 +13,7 @@ $RECYCLE.BIN/
 *.gch
 *.hex
 *.i*86
+*.img
 *.iso
 *.ko
 *.la
@@ -64,6 +65,7 @@ Temporary Items
 Thumbs.db
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
+_unused*.*
 build/
 ehthumbs.db
 sftp-config.json

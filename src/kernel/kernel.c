@@ -2,7 +2,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "kernel/lib/fallback_vga.h"
-#include "kernel/lib/gdt.h"
 #include "kernel/lib/idt.h"
 #include "kernel/lib/isr.h"
 #include "kernel/lib/irq.h"
@@ -14,7 +13,7 @@
 
 void kernel_entry()
 {
-	gdt_install();
+	__asm__ __volatile__ ("xchg %bx, %bx");
 	/* Initialize terminal interface */
 	terminal_initialize();
 }

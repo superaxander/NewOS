@@ -1,3 +1,4 @@
+[BITS 32]
 global isr0
 global isr1
 global isr2

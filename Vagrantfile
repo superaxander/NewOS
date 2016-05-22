@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
     apt-get update
     apt-get install -y libgmp3-dev libmpfr-dev libisl-dev libcloog-isl-dev libmpc-dev texinfo make bison flex gcc g++ nasm build-essential grub qemu zip xorriso
     export PREFIX="/opt/cross"
-    export TARGET=i686-elf
+    export TARGET=x86_64-elf
     export PATH="$PREFIX/bin:$PATH"
     mkdir /tmp/
     mkdir /tmp/build
