@@ -1,4 +1,5 @@
-[BITS 32]
+%include "asmMacros.s"
+[BITS 64]
 global irq0
 global irq1
 global irq2
@@ -116,25 +117,25 @@ irq15:
 extern irq_handler
 
 irq_common_stub:
-  pusha
-  push ds
-  push es
+  pushaq
+;  push ds
+;  push es
   push fs
   push gs
   mov ax, 0x10
-  mov ds, ax
-  mov es, ax
+;  mov ds, ax
+;  mov es, ax
   mov fs, ax
   mov gs, ax
   mov eax, esp
-  push eax
-  mov eax, irq_handler
-  call eax
-  pop eax
+  push rax
+  mov rax, irq_handler
+  call rax
+  pop rax
   pop gs
   pop fs
-  pop es
-  pop ds
-  popa
+;  pop es
+;  pop ds
+  popaq
   add esp, 8
-  iret
+  iretq

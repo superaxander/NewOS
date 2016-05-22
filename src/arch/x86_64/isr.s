@@ -1,4 +1,5 @@
-[BITS 32]
+%include "asmMacros.s"
+[BITS 64]
 global isr0
 global isr1
 global isr2
@@ -276,25 +277,25 @@ isr31:
 
 extern fault_handler
 isr_common_stub:
-    pusha
-    push ds
-    push es
+    pushaq
+;    push ds no segmentation in 64 bit
+;    push es
     push fs
     push gs
     mov ax, 0x10  
-    mov ds, ax
-    mov es, ax
+;    mov ds, ax
+;    mov es, ax
     mov fs, ax
     mov gs, ax
     mov eax, esp  
-    push eax
-    mov eax, fault_handler
-    call eax       
-    pop eax
+    push rax
+    mov rax, fault_handler
+    call rax       
+    pop rax
     pop gs
     pop fs
-    pop es
-    pop ds
-    popa
+;    pop es
+;    pop ds
+    popaq
     add esp, 8
-    iret     
+    iretq  
